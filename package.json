@@ -1,0 +1,15 @@
+{
+  "name": "vite-plugin-vue2-suffix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup src/index.js -o dist.js"
+  },
+  "author": "williamyorkl",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^2.56.2"
+  }
+}
