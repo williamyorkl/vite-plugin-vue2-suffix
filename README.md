@@ -21,7 +21,7 @@ Add it to `vite.config.js`
 ```js
 // vite.config.js
 import { createVuePlugin } from "vite-plugin-vue2";
-import VitePluginVue2Suffix from "../../src";
+import VitePluginVue2Suffix from "vite-plugin-vue2-suffix";
 
 export default {
   plugins: [createVuePlugin(), VitePluginVue2Suffix()],
