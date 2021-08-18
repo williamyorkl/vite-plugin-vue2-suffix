@@ -30,7 +30,11 @@ export default {
 
 That's all.
 
-Basically, it will automatically turn this
+### Situation 1
+
+> components using in another components
+
+it will automatically turn this
 
 ```vue
 <template>
@@ -64,7 +68,7 @@ into this
 <script>
 import ComponentA from "./components/ComponentA/index.vue";
 
-/** or if your component is in a outter path  */
+/** or if your component is in a outside path  */
 // import ComponentA from './components/ComponentA.vue'
 
 export default {
@@ -73,6 +77,60 @@ export default {
   },
 };
 </script>
+```
+
+### Situation 2
+
+> components using in routes
+
+also, it will turn this:
+
+```js
+import Vue from "vue";
+import Router from "vue-router";
+
+Vue.use(Router);
+
+const routerMap = [
+  {
+    path: "/news",
+    component: () => import("../components/News"),
+  },
+];
+
+export default new Router({
+  scrollBehavior: () => ({
+    y: 0,
+    x: 0,
+  }),
+  routes: routerMap,
+});
+```
+
+into this below:
+
+```js
+import Vue from "vue";
+import Router from "vue-router";
+
+Vue.use(Router);
+
+const routerMap = [
+  {
+    path: "/news",
+    component: () => import("../components/News.vue"),
+    /** or if your component is in a inside path */
+    // component: () => import('../components/News/index.vue')
+  },
+];
+
+export default new Router({
+  scrollBehavior: () => ({
+    y: 0,
+    x: 0,
+  }),
+  routes: routerMap,
+});
 ```
 
 ## License
