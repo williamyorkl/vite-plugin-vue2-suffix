@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-vue2-suffix",
-  "version": "1.0.3",
+  "version": "1.0.3-rc.1",
   "description": "",
   "main": "dist.js",
   "scripts": {
