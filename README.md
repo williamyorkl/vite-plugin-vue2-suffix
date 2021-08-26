@@ -1,7 +1,6 @@
 # vite-plugin-vue2-suffix
 
-> it has been official inclued [detail](https://github.com/vitejs/awesome-vite#transformers)
-> <br>
+> it has been official inclued [detail](https://github.com/vitejs/awesome-vite#transformers) > <br>
 
 ### A plugin solve missing '\*.vue' suffix problem transform webpack to vite in vue2
 
@@ -12,7 +11,7 @@
 Install
 
 ```bash
-npm i vite-plugin-components -D
+npm i vite-plugin-vue2-suffix -D
 ```
 
 Add it to `vite.config.js`
