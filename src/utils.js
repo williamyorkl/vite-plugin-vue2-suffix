@@ -1,5 +1,5 @@
-import fs from 'fs'
-import path from 'path'
+import fs from "fs";
+import path from "path";
 
 // 相对路径转换成绝对路径的【前缀】
 const fullPathPrefix = (m, id) => {
@@ -11,12 +11,12 @@ const fullPathPrefix = (m, id) => {
    *  './component/foo-xxx' // 命名不一致问题 component: { xxx }
    */
 
-  if (m.includes('@')) {
-    return process.cwd() + '/src'
+  if (m.includes("@")) {
+    return process.cwd() + "/src";
   } else {
-    return path.parse(id).dir // 返回当前文件下路径
+    return path.parse(id).dir; // 返回当前文件下路径
   }
-}
+};
 
 /**
  *
@@ -26,28 +26,28 @@ const fullPathPrefix = (m, id) => {
 
 export function handleImportVerifyPath(code) {
   return (filePathRaw) => {
-    if (!code) return
+    if (!code) return;
     // 如果能判断到有读写权限，取得地址 / 的最后一个单词
-    const fileReg = `/${filePathRaw.split('/').pop()}`
-    console.log('handleImport -> fileReg', fileReg)
-    if (filePathRaw.includes('.vue')) return
+    const fileReg = `/${filePathRaw.split("/").pop()}`;
+    console.log("handleImport -> fileReg", fileReg);
+    if (filePathRaw.includes(".vue")) return;
     try {
       // 检测文件读写权限
-      fs.accessSync(`${filePathRaw}.vue`, fs.constants.R_OK)
+      fs.accessSync(`${filePathRaw}.vue`, fs.constants.R_OK);
 
       // 并加上后缀
-      code = code.replace(fileReg, `${fileReg}.vue`)
-      console.log('handleImportVerifyPath -> code', code)
+      code = code.replace(fileReg, `${fileReg}.vue`);
+      console.log("handleImportVerifyPath -> code", code);
     } catch (error) {
       // 如果判断到没有读写权限，则/index.vue
-      code = code.replace(fileReg, `${fileReg}/index.vue`)
+      code = code.replace(fileReg, `${fileReg}/index.vue`);
     }
 
     // return _code
-    if (code.includes('BackTop')) {
-      console.log('handleImportVerifyPath inside', code)
+    if (code.includes("BackTop")) {
+      console.log("handleImportVerifyPath inside", code);
     }
-  }
+  };
 }
 
 /**
@@ -63,18 +63,26 @@ export function handleGetCompoents(code) {
    *  xxx3
    *  }
    */
-  const regExp = /(?<=components:(\s)*)({(?:[^}]+)})/g
-  let regComponent = code.match(regExp)
+  const regExp = /(?<=components:(\s)*)({(?:[^}]+)})/g;
+  let regComponent = code.match(regExp);
 
   // 去掉 “// ” 的注释
-  regComponent = regComponent && regComponent[0].replace(/\/\/(.*)/g, '')
+  regComponent = regComponent && regComponent[0].replace(/\/\/(.*)/g, "");
 
   // 通过 “,” 分隔开componet元素
-  regComponent = regComponent && regComponent.split(',')
+  regComponent = regComponent && regComponent.split(",");
 
-  let componentList = regComponent && regComponent.map((w) => w.replace(/\n*/g, '').replace(/\s*/g, '').replace(/{/, '').replace(/}/, ''))
+  let componentList =
+    regComponent &&
+    regComponent.map((w) =>
+      w
+        .replace(/\n*/g, "")
+        .replace(/\s*/g, "")
+        .replace(/{/, "")
+        .replace(/}/, "")
+    );
 
-  return componentList
+  return componentList;
 }
 
 // 处理 *.vue 里面的 import 语句
@@ -83,21 +91,24 @@ export function handleGetCompoents(code) {
  * @param {Array}} componentNameArray 组件名数组
  */
 export function handleGetImportUrl(componentNameArray, code, id) {
-  if (!componentNameArray) return
-  const compoentMatchArr = componentNameArray.join('|')
-  const regExp = new RegExp(`(?<=(import\\s(${compoentMatchArr})\\sfrom\\s))(\\'(.*)\\')`, 'g')
+  if (!componentNameArray) return;
+  const compoentMatchArr = componentNameArray.join("|");
+  const regExp = new RegExp(
+    `(?<=(import\\s(${compoentMatchArr})\\sfrom\\s))(\\'(.*)\\')`,
+    "g"
+  );
 
-  let regComponent = code.match(regExp) && code.match(regExp).map((m) => m.replace(/\'/g, ''))
+  let regComponent =
+    code.match(regExp) && code.match(regExp).map((m) => m.replace(/\'/g, ""));
   // console.log('handleGetImportUrl -> regComponent', regComponent)
 
   return {
     pathList: handleFullPath(regComponent, id),
-    componentShortPath: regComponent
-  }
+    componentShortPath: regComponent,
+  };
 
   // return handleFullPath(regComponent, id)
 }
-
 
 /**
  * 把相对路径都处理成绝对路径
@@ -107,14 +118,14 @@ export function handleFullPath(regComponent, id) {
   return (
     regComponent &&
     regComponent.map((m) => {
-      if (m.includes('@')) {
-        let mAfter = m.replace('@/', '')
-        return path.join(fullPathPrefix(m, id), mAfter)
+      if (m.includes("@")) {
+        let mAfter = m.replace("@/", "");
+        return path.join(fullPathPrefix(m, id), mAfter);
       } else {
-        return path.resolve(fullPathPrefix(m, id), m)
+        return path.resolve(fullPathPrefix(m, id), m);
       }
     })
-  )
+  );
 }
 
 /**
@@ -122,15 +133,15 @@ export function handleFullPath(regComponent, id) {
  * @param {string} code 文件代码
  * @param {string} toWriteFileFullPath 输出文件路径
  */
-export function debugWriteFile(code, toWriteFileFullPath = '') {
-  const defaultPath = './plugins/vite-plugin-vue2-suffix/log.txt'
+export function debugWriteFile(code, toWriteFileFullPath = "") {
+  const defaultPath = "./plugins/vite-plugin-vue2-suffix/log.txt";
 
-  const logFilePath = toWriteFileFullPath || defaultPath
+  const logFilePath = toWriteFileFullPath || defaultPath;
 
   try {
-    const data = fs.writeFileSync(logFilePath, code)
-    console.log('transform -> data', data)
+    const data = fs.writeFileSync(logFilePath, code);
+    console.log("transform -> data", data);
   } catch (error) {
-    console.log('transform -> error', error)
+    console.log("transform -> error", error);
   }
 }

@@ -5,11 +5,12 @@
   "main": "dist.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup src/index.js -o dist.js"
+    "build": "rollup -c"
   },
   "author": "williamyorkl",
   "license": "ISC",
   "devDependencies": {
-    "rollup": "^2.56.2"
+    "rollup": "^2.56.2",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }
