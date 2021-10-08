@@ -96,6 +96,7 @@ function VitePluginVue2Suffix() {
           routerImportArr.forEach((i) => {
             // console.log('handleRouteVueSuffixImport -> i', i)
             if (i.includes(".vue")) return;
+            // TODO - 处理路由目录可配置化
             if (i.includes("/views") || i.includes("/components")) {
               newRouterImportArr.push(`${i}`);
             }
